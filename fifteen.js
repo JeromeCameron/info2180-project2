@@ -6,11 +6,12 @@ window.onload = function(){
         let parentTile = document.getElementById('puzzlearea');
         let tiles = parentTile.querySelectorAll("div");
         let x = 0;
+        const col = 4;
 
         tiles.forEach(item => {
                 item.classList.add('puzzlepiece');
-                item.style.top =(Math.floor(x / 4)) * 100 + "px";
-                item.style.left = ( x % 4 ) * 100 + "px";
+                item.style.top =(Math.floor(x / col)) * 100 + "px";
+                item.style.left = ( x % col ) * 100 + "px";
                 item.style.backgroundPosition = "-"+item.style.left+" "+"-"+item.style.top;
                 x += 1;
             });
