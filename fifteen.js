@@ -3,10 +3,8 @@
 Extra Features Used:
 1. Animations and/or transitions
 2. Multiple backgrounds
-3. Game time
-4. End-of-game notification
+3. End-of-game notification
 */
-
 window.onload = function(){
 
     //Global Variables
@@ -81,8 +79,6 @@ window.onload = function(){
             });
 
     //Behavior
-
-
     tiles.forEach(item => {
         item.addEventListener("click", function(){
             if(isMovevable(item)){
@@ -130,6 +126,9 @@ window.onload = function(){
         item.setAttribute("id", "tile_" + blankTileX + "," + blankTileY);
         blankTileX = tempTileX;
         blankTileY = tempTileY;
+        if(winner(tiles)===15){
+            celebrate();
+        }
     }
     //Function checks it a tile is movevable
     function isMovevable(item){
@@ -149,18 +148,66 @@ window.onload = function(){
         let task = "shuffle";
         let button = document.querySelector("button");
         button.addEventListener("click", function(){
-                    for(let i=0; i<100; i++){
-                        tiles.forEach(item => {
-                            if(isMovevable(item)){
-                            moveTile(item,task);
-                            }
-                        });
-                    }
+            for(let j=Math.floor(Math.random() * 6); j<100; j++){
+                for(let i=0; i<100; i++){
+                    tiles.forEach(item => {
+                        if(isMovevable(item)){
+                        moveTile(item,task);
+                        }
+                    });
+                }
+            }
         })
     }shuffle();
 
     function loadBackground(item,img){
         item.style.background = "url("+img+")";
         item.style.backgroundPosition = "-"+item.style.left+" "+"-"+item.style.top;
+    }
+
+    //Function checks it a tile is movevable
+    function winner(pieces){
+        let count = 1;      //counter
+        let count_2 = 1;    //counter
+        let r = 1;
+        let c = 1;
+        let result = 0;
+        pieces.forEach(item => {
+            let row = parseInt(item.id[5]);
+            let col = parseInt(item.id[7]);
+
+            if(row === r && col === c){
+                console.log(row +" "+ col+"_____"+r +" "+ c);
+                result += 1;
+            }else{
+                console.log("f");
+                console.log(row +" "+ col+"_____"+r +" "+ c);
+            }
+            count += 1;
+            if(count > 4){
+                r += 1;
+                count = 1;
+            }
+            if(count_2 === 4){
+                c = 0;
+                count_2 = 0;
+            }
+
+            c += 1;
+
+            count_2 += 1;
+        });
+        console.log(result);
+        return result;
+    }
+
+    function celebrate(){
+        let node =  document.createElement("img");
+        parentTile.before(node);
+        //node.style.background = "url(art.jpg)";
+        node.src = "winner.jpg";
+        node.style = "width:400px;height:100px;";
+        node.style.position = "relative";
+        node.style.zIndex = -1;
     }
 }
