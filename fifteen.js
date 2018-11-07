@@ -126,8 +126,10 @@ window.onload = function(){
         item.setAttribute("id", "tile_" + blankTileX + "," + blankTileY);
         blankTileX = tempTileX;
         blankTileY = tempTileY;
-        if(winner(tiles)===15){
-            celebrate();
+        if(task !== "shuffle"){
+            if(winner(tiles)===15){
+                celebrate();
+            }
         }
     }
     //Function checks it a tile is movevable
@@ -143,13 +145,13 @@ window.onload = function(){
             return false;
         }
     }
-
+    //function shuffles puzzle pieces
     function shuffle(){
         let task = "shuffle";
         let button = document.querySelector("button");
         button.addEventListener("click", function(){
-            for(let j=Math.floor(Math.random() * 6); j<100; j++){
-                for(let i=0; i<100; i++){
+            for(let j=Math.floor(Math.random(1) * 9); j<100; j++){
+                for(let i=0; i<200; i++){
                     tiles.forEach(item => {
                         if(isMovevable(item)){
                         moveTile(item,task);
@@ -165,7 +167,7 @@ window.onload = function(){
         item.style.backgroundPosition = "-"+item.style.left+" "+"-"+item.style.top;
     }
 
-    //Function checks it a tile is movevable
+    //Function checks if last move is a winning move.
     function winner(pieces){
         let count = 1;      //counter
         let count_2 = 1;    //counter
@@ -177,11 +179,7 @@ window.onload = function(){
             let col = parseInt(item.id[7]);
 
             if(row === r && col === c){
-                console.log(row +" "+ col+"_____"+r +" "+ c);
                 result += 1;
-            }else{
-                console.log("f");
-                console.log(row +" "+ col+"_____"+r +" "+ c);
             }
             count += 1;
             if(count > 4){
@@ -192,7 +190,6 @@ window.onload = function(){
                 c = 0;
                 count_2 = 0;
             }
-
             c += 1;
 
             count_2 += 1;
@@ -201,6 +198,7 @@ window.onload = function(){
         return result;
     }
 
+    //function displays a winner banner when the game is completed successfully
     function celebrate(){
         let node =  document.createElement("img");
         parentTile.before(node);
@@ -209,5 +207,6 @@ window.onload = function(){
         node.style = "width:400px;height:100px;";
         node.style.position = "relative";
         node.style.zIndex = -1;
+        $(node).hide(7000);
     }
 }
